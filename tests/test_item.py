@@ -1,6 +1,7 @@
 import pytest
 
 from src.item import Item
+from src.phone import Phone, Mixin, Keyboard
 
 
 @pytest.fixture
@@ -13,12 +14,14 @@ def test_calculate_total_price(item1):
 
 
 def test_apply_discount(item1):
-    assert item1.apply_discount() == 10.0
+    item1.pay_rate = 0.8
+    item1.apply_discount()
+    assert item1.price == 8.0
 
 
 def test_instantiate_from_csv():
-    p = Item.instantiate_from_csv()
-    assert len(p) == 5
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 5
 
 
 def test__str__(item1):
@@ -37,10 +40,18 @@ def test_init(item1):
     assert item1.name == "test"
 
 
-# def test__add__(item2, item1):
-#     assert item2.__add__(item1) == 20
-#
-#
-# def test_change_lang(item3):
-#     assert item3.change_lang == 'RU'
-#     assert item3.change_lang == 'EN'
+@pytest.fixture
+def item3():
+    return Keyboard('test', 10, 10)
+
+
+def test_change_lang(item3):
+    item3.change_lang()
+    assert item3.language == 'RU'
+    item3.change_lang()
+    assert item3.language == 'EN'
+
+
+def test_set_language(item3):
+    with pytest.raises(AttributeError):
+        item3.language = "CH"

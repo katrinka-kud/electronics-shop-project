@@ -64,7 +64,7 @@ class Item:
         """
         cls.all.clear()
 
-        with open(filename, 'r', encoding='UTF-8', newline='') as f:
+        with open(filename, 'r', encoding='windows-1251', newline='') as f:
             reader = csv.DictReader(f)
             for line in reader:
                 name = line['name']

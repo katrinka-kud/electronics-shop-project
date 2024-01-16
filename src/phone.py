@@ -35,10 +35,7 @@ class Phone(Item):
 
 
 class Mixin():
-    def __init__(self, *args, **kwargs):
-        language = 'EN'
-        super().__init__(*args, **kwargs)
-        self.__language = language
+    __language = 'EN'
 
     @property
     def language(self):
@@ -47,12 +44,10 @@ class Mixin():
     def change_lang(self):
         if self.__language == 'EN':
             self.__language = 'RU'
-            return self.__language
         elif self.__language == 'RU':
             self.__language = 'EN'
-            return self.__language
 
 
-class Keyboard(Mixin, Item):
-    def __init__(self, *args):
-        super().__init__(*args)
+class Keyboard(Item, Mixin):
+    def __init__(self, name: str, price: float, quantity: int):
+        super().__init__(name, price, quantity)
