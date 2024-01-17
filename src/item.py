@@ -64,10 +64,25 @@ class Item:
         """
         cls.all.clear()
 
-        with open(filename, 'r', encoding='windows-1251', newline='') as f:
-            reader = csv.DictReader(f)
-            for line in reader:
-                name = line['name']
-                price = float(line['price'])
-                quantity = int(line['quantity'])
-                cls(name, price, quantity)
+        try:
+            with open(filename, 'r', encoding='windows-1251', newline='') as f:
+                reader = csv.DictReader(f)
+                for line in reader:
+                    name = line['name']
+                    price = float(line['price'])
+                    quantity = int(line['quantity'])
+                    if list(line.keys()) != ['name', 'price', 'quantity']:
+                        raise InstantiateCSVError('Файл item.csv поврежден')
+                    else:
+                        cls(name, price, quantity)
+        except FileNotFoundError:
+            print('Отсутствует файл item.csv')
+
+
+class InstantiateCSVError(Exception):
+
+    def __init__(self, *args):
+        print('InstantiateCSVError: Файл item.csv поврежден')
+
+    def __str__(self):
+        return 'InstantiateCSVError: Файл item.csv поврежден'
